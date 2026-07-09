@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
+import { Geist, Geist_Mono, Silkscreen } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const pixel = Press_Start_2P({
+const pixel = Silkscreen({
   variable: "--font-pixel",
-  weight: "400",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 

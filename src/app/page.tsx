@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const links = {
   github: "https://github.com/XavierBeckles",
   email: "mailto:xavierbeckles23@gmail.com",
@@ -13,30 +15,8 @@ type Project = {
   href?: string;
   linkLabel?: string;
   note?: string;
-  icon: string[];
+  logo: "inline" | "axiom";
 };
-
-const INLINE_ICON = [
-  "..####..",
-  ".#....#.",
-  "#..##..#",
-  "#..#...#",
-  "#..#...#",
-  "#......#",
-  ".#....#.",
-  "..####..",
-];
-
-const AXIOM_ICON = [
-  "#......#",
-  "#......#",
-  "##....##",
-  ".##..##.",
-  ".##..##.",
-  "##....##",
-  "#......#",
-  "#......#",
-];
 
 const projects: Project[] = [
   {
@@ -50,7 +30,7 @@ const projects: Project[] = [
     href: "https://myinline.vercel.app",
     linkLabel: "Visit site →",
     note: "Live preview — payments aren't fully live yet",
-    icon: INLINE_ICON,
+    logo: "inline",
   },
   {
     name: "Axiom",
@@ -63,7 +43,7 @@ const projects: Project[] = [
     href: "https://axiom-fitness.onrender.com",
     linkLabel: "Visit site →",
     note: "Free tier — may take a few seconds to wake up",
-    icon: AXIOM_ICON,
+    logo: "axiom",
   },
 ];
 
@@ -88,6 +68,13 @@ const stack = [
   "Git",
 ];
 
+const terminalLines = [
+  { prompt: "$", text: "whoami" },
+  { prompt: ">", text: "Xavier Beckles — solo founder, full-stack" },
+  { prompt: "$", text: "cat status.txt" },
+  { prompt: ">", text: "Building InLine. AI writes the code, I make the calls." },
+];
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col font-sans">
@@ -104,30 +91,10 @@ export default function Home() {
   );
 }
 
-function PixelIcon({ grid, className }: { grid: string[]; className?: string }) {
-  const size = grid.length;
-  return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      className={className}
-      shapeRendering="crispEdges"
-      aria-hidden
-    >
-      {grid.flatMap((row, y) =>
-        row.split("").map((cell, x) =>
-          cell === "#" ? (
-            <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="currentColor" />
-          ) : null
-        )
-      )}
-    </svg>
-  );
-}
-
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-pixel text-[10px] leading-relaxed tracking-wide text-accent sm:text-xs">
-      &gt; {children}
+    <p className="font-mono text-xs font-medium uppercase tracking-[0.15em] text-accent">
+      {children}
     </p>
   );
 }
@@ -140,10 +107,10 @@ function Nav() {
     { href: "#contact", label: "Contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b-2 border-border bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#" className="font-pixel text-[10px] tracking-wide sm:text-xs">
-          XAVIER.BECKLES
+        <a href="#" className="font-pixel text-sm tracking-wide">
+          XB
         </a>
         <ul className="flex items-center gap-6 text-sm text-muted">
           {items.map((item) => (
@@ -159,16 +126,39 @@ function Nav() {
   );
 }
 
+function TerminalWindow() {
+  return (
+    <div className="w-full max-w-xl border border-border bg-surface font-mono text-sm">
+      <div className="flex items-center gap-1.5 border-b border-border px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+        <span className="ml-3 text-xs text-muted">xavier@portfolio</span>
+      </div>
+      <div className="flex flex-col gap-1.5 px-4 py-4">
+        {terminalLines.map((line, i) => (
+          <p key={i} className={line.prompt === "$" ? "text-foreground" : "text-muted"}>
+            <span className="text-accent">{line.prompt}</span> {line.text}
+          </p>
+        ))}
+        <p className="text-foreground">
+          <span className="text-accent">$</span> <span className="blink">_</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 py-28 sm:py-40">
+    <section className="relative overflow-hidden px-6 py-24 sm:py-32">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(circle_at_15%_10%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_45%)]"
       />
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-7">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <Eyebrow>Solo founder building InLine</Eyebrow>
-        <h1 className="max-w-3xl text-5xl font-bold tracking-tight sm:text-7xl">
+        <h1 className="font-pixel max-w-3xl text-2xl leading-normal tracking-wide sm:text-4xl md:text-5xl">
           I ship products.
           <br />
           AI writes the code.
@@ -180,19 +170,22 @@ function Hero() {
           architecture, and direct AI tools to build it — then I&apos;m the one debugging it,
           fixing it, and shipping it.
         </p>
-        <div className="flex flex-wrap gap-5 pt-4">
+        <div className="flex flex-wrap gap-4">
           <a
             href="#work"
-            className="pixel-border inline-flex bg-accent px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-[#08110d] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
+            className="border border-accent bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wide text-[#08110d] transition-colors hover:bg-transparent hover:text-accent"
           >
             See my work
           </a>
           <a
             href={links.email}
-            className="pixel-border-muted inline-flex border border-border bg-surface px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-foreground transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
+            className="border border-border px-6 py-3 text-sm font-semibold uppercase tracking-wide text-foreground transition-colors hover:border-accent hover:text-accent"
           >
             Get in touch
           </a>
+        </div>
+        <div className="pt-4">
+          <TerminalWindow />
         </div>
       </div>
     </section>
@@ -201,7 +194,7 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="border-t-2 border-border px-6 py-20">
+    <section id="about" className="border-t border-border px-6 py-20">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 sm:flex-row sm:gap-16">
         <div className="sm:w-40 sm:shrink-0">
           <Eyebrow>About</Eyebrow>
@@ -235,16 +228,39 @@ function StatusBadge({ status, label }: { status: Project["status"]; label: stri
   );
 }
 
+function ProjectLogo({ logo }: { logo: Project["logo"] }) {
+  if (logo === "inline") {
+    return (
+      <Image
+        src="/logos/inline-icon.png"
+        alt="InLine logo"
+        width={40}
+        height={40}
+        className="h-10 w-10 object-contain"
+      />
+    );
+  }
+  return (
+    <Image
+      src="/logos/axiom-icon.svg"
+      alt="Axiom logo"
+      width={40}
+      height={40}
+      className="h-10 w-10 object-contain"
+    />
+  );
+}
+
 function ProjectCard({ project }: { project: Project }) {
   const content = (
     <>
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-border bg-background text-accent">
-          <PixelIcon grid={project.icon} className="h-8 w-8" />
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-border bg-background">
+          <ProjectLogo logo={project.logo} />
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-3">
-            <h3 className="font-pixel text-base tracking-wide sm:text-lg">{project.name}</h3>
+            <h3 className="font-pixel text-base tracking-wide">{project.name}</h3>
             <StatusBadge status={project.status} label={project.statusLabel} />
           </div>
           <p className="text-sm text-muted">{project.tagline}</p>
@@ -260,14 +276,14 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-4">
         {project.href && (
-          <span className="font-pixel text-[10px] text-accent">{project.linkLabel ?? "Visit →"}</span>
+          <span className="text-sm font-semibold text-accent">{project.linkLabel ?? "Visit →"}</span>
         )}
         {project.note && <span className="text-sm text-muted">{project.note}</span>}
       </div>
     </>
   );
 
-  const cardClass = "pixel-border-muted block border border-border bg-surface p-8 transition-transform sm:p-10";
+  const cardClass = "block border border-border bg-surface p-8 transition-colors sm:p-10";
 
   if (project.href) {
     return (
@@ -275,7 +291,7 @@ function ProjectCard({ project }: { project: Project }) {
         href={project.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${cardClass} hover:-translate-x-1 hover:-translate-y-1 hover:pixel-border`}
+        className={`${cardClass} hover:border-accent/60`}
       >
         {content}
       </a>
@@ -287,7 +303,7 @@ function ProjectCard({ project }: { project: Project }) {
 
 function Projects() {
   return (
-    <section id="work" className="border-t-2 border-border px-6 py-20">
+    <section id="work" className="border-t border-border px-6 py-20">
       <div className="mx-auto w-full max-w-5xl">
         <div className="mb-10">
           <Eyebrow>Selected work</Eyebrow>
@@ -317,7 +333,7 @@ function Projects() {
 
 function Skills() {
   return (
-    <section id="skills" className="border-t-2 border-border px-6 py-20">
+    <section id="skills" className="border-t border-border px-6 py-20">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 sm:flex-row sm:gap-16">
         <div className="sm:w-40 sm:shrink-0">
           <Eyebrow>How I build</Eyebrow>
@@ -352,15 +368,15 @@ function Skills() {
 
 function Contact() {
   return (
-    <section id="contact" className="border-t-2 border-border px-6 py-24">
+    <section id="contact" className="border-t border-border px-6 py-24">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-start gap-6">
         <Eyebrow>Contact</Eyebrow>
-        <p className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
+        <p className="font-pixel max-w-xl text-xl leading-normal tracking-wide sm:text-2xl">
           Building something interesting? Let&apos;s talk.
         </p>
         <a
           href={links.email}
-          className="pixel-border inline-flex bg-accent px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-[#08110d] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
+          className="border border-accent bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wide text-[#08110d] transition-colors hover:bg-transparent hover:text-accent"
         >
           xavierbeckles23@gmail.com
         </a>
@@ -371,7 +387,7 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t-2 border-border px-6 py-8">
+    <footer className="border-t border-border px-6 py-8">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-4 text-sm text-muted sm:flex-row">
         <p>© {new Date().getFullYear()} Xavier Beckles</p>
         <div className="flex gap-6">

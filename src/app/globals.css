@@ -30,8 +30,8 @@ body {
       transparent 1px,
       transparent 3px
     ),
-    radial-gradient(circle at 1px 1px, color-mix(in srgb, white 5%, transparent) 1px, transparent 0)
-      0 0 / 24px 24px,
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, white 8%, transparent) 1.5px, transparent 0)
+      0 0 / 16px 16px,
     var(--background);
   color: var(--foreground);
 }
@@ -43,15 +43,15 @@ body {
 
 .font-pixel {
   font-family: var(--font-pixel);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.pixel-border {
-  border-radius: 0;
-  box-shadow: 4px 4px 0 0 var(--accent);
+.blink {
+  animation: blink 1s steps(1, jump-none) infinite;
 }
 
-.pixel-border-muted {
-  border-radius: 0;
-  box-shadow: 4px 4px 0 0 var(--border);
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
