@@ -23,7 +23,7 @@ const projects: Project[] = [
     name: "InLine",
     tagline: "Booking & queue SaaS for barbers and hairdressers",
     description:
-      "Public booking pages, live walk-in queues, client management, and PayPal payments. I own the product, the architecture, and every decision in it — Claude Code writes most of the actual code, I direct it, review it, and fix what's broken.",
+      "Public booking pages, live walk-in queues, client management, and PayPal payments. I own the product, the architecture, and every decision in it, built with AI-assisted development and a lot of hands-on debugging.",
     tags: ["Next.js", "TypeScript", "Supabase", "PayPal API", "Tailwind CSS"],
     status: "wip",
     statusLabel: "Work in progress — pre-launch",
@@ -36,7 +36,7 @@ const projects: Project[] = [
     name: "Axiom",
     tagline: "Fitness tracking app — workouts, meals, progress",
     description:
-      "Workout logging, USDA food search, BMI and progress tracking, Argon2 auth, PWA support. Same approach as InLine: I designed the product and data model, AI wrote most of the Flask backend under my direction.",
+      "Workout logging, USDA food search, BMI and progress tracking, Argon2 auth, PWA support. Same approach as InLine: I designed the product and data model and built it with AI-assisted development.",
     tags: ["Flask", "Python", "SQLite", "USDA API"],
     status: "wip",
     statusLabel: "Work in progress",
@@ -72,7 +72,7 @@ const terminalLines = [
   { prompt: "$", text: "whoami" },
   { prompt: ">", text: "Xavier Beckles — solo founder, full-stack" },
   { prompt: "$", text: "cat status.txt" },
-  { prompt: ">", text: "Building InLine. AI writes the code, I make the calls." },
+  { prompt: ">", text: "Building InLine — product, architecture, ship." },
 ];
 
 export default function Home() {
@@ -159,16 +159,16 @@ function Hero() {
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <Eyebrow>Solo founder building InLine</Eyebrow>
         <h1 className="font-pixel max-w-3xl text-2xl leading-normal tracking-wide sm:text-4xl md:text-5xl">
-          I ship products.
+          I take products
           <br />
-          AI writes the code.
+          from idea
           <br />
-          <span className="text-accent">I make the decisions.</span>
+          <span className="text-accent">to shipped.</span>
         </h1>
         <p className="max-w-xl text-lg leading-relaxed text-muted">
-          I&apos;m not going to pretend I hand-wrote every line. I scope the product, design the
-          architecture, and direct AI tools to build it — then I&apos;m the one debugging it,
-          fixing it, and shipping it.
+          I scope the product, design the architecture, and own every decision end to end —
+          leaning on AI tooling to move fast, then doing the hands-on debugging and judgment calls
+          myself to make sure it actually works.
         </p>
         <div className="flex flex-wrap gap-4">
           <a
@@ -203,10 +203,9 @@ function About() {
           I&apos;m Xavier. Most of my time goes into{" "}
           <span className="text-foreground">InLine</span>, a SaaS app that lets barbers and
           hairdressers manage bookings, walk-in queues, and client relationships. I own it end to
-          end — the product decisions, the data model, the payments, the launch checklist — and I
-          get there by directing AI coding tools rather than typing every line myself. What I
-          bring is judgment: knowing what to build, spotting what&apos;s broken, and not shipping
-          until it actually works.
+          end — the product decisions, the data model, the payments, the launch checklist. I build
+          fast by using AI-assisted development as leverage, but the judgment is mine: knowing
+          what to build, spotting what&apos;s broken, and not shipping until it actually works.
         </p>
       </div>
     </section>
