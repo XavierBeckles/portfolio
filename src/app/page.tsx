@@ -374,7 +374,11 @@ function Contact() {
       <div className="mx-auto flex w-full max-w-5xl flex-col items-start gap-6">
         <Eyebrow>Contact</Eyebrow>
         <p className="font-pixel max-w-xl text-xl leading-normal tracking-wide sm:text-2xl">
-          Building something interesting? Let&apos;s talk.
+          Need something built? I take on select freelance work.
+        </p>
+        <p className="max-w-xl leading-relaxed text-muted">
+          If InLine or Axiom looks like what your business needs — a booking system, a client
+          tool, something custom — that&apos;s exactly the kind of work I take on.
         </p>
         <a
           href={links.email}
