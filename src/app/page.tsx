@@ -13,7 +13,30 @@ type Project = {
   href?: string;
   linkLabel?: string;
   note?: string;
+  icon: string[];
 };
+
+const INLINE_ICON = [
+  "..####..",
+  ".#....#.",
+  "#..##..#",
+  "#..#...#",
+  "#..#...#",
+  "#......#",
+  ".#....#.",
+  "..####..",
+];
+
+const AXIOM_ICON = [
+  "#......#",
+  "#......#",
+  "##....##",
+  ".##..##.",
+  ".##..##.",
+  "##....##",
+  "#......#",
+  "#......#",
+];
 
 const projects: Project[] = [
   {
@@ -27,6 +50,7 @@ const projects: Project[] = [
     href: "https://myinline.vercel.app",
     linkLabel: "Visit site →",
     note: "Live preview — payments aren't fully live yet",
+    icon: INLINE_ICON,
   },
   {
     name: "Axiom",
@@ -39,6 +63,7 @@ const projects: Project[] = [
     href: "https://axiom-fitness.onrender.com",
     linkLabel: "Visit site →",
     note: "Free tier — may take a few seconds to wake up",
+    icon: AXIOM_ICON,
   },
 ];
 
@@ -79,6 +104,34 @@ export default function Home() {
   );
 }
 
+function PixelIcon({ grid, className }: { grid: string[]; className?: string }) {
+  const size = grid.length;
+  return (
+    <svg
+      viewBox={`0 0 ${size} ${size}`}
+      className={className}
+      shapeRendering="crispEdges"
+      aria-hidden
+    >
+      {grid.flatMap((row, y) =>
+        row.split("").map((cell, x) =>
+          cell === "#" ? (
+            <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="currentColor" />
+          ) : null
+        )
+      )}
+    </svg>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="font-pixel text-[10px] leading-relaxed tracking-wide text-accent sm:text-xs">
+      &gt; {children}
+    </p>
+  );
+}
+
 function Nav() {
   const items = [
     { href: "#work", label: "Work" },
@@ -87,15 +140,15 @@ function Nav() {
     { href: "#contact", label: "Contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b-2 border-border bg-background/90 backdrop-blur">
       <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
-        <a href="#" className="text-sm font-semibold tracking-tight">
-          Xavier Beckles
+        <a href="#" className="font-pixel text-[10px] tracking-wide sm:text-xs">
+          XAVIER.BECKLES
         </a>
         <ul className="flex items-center gap-6 text-sm text-muted">
           {items.map((item) => (
             <li key={item.href}>
-              <a href={item.href} className="transition-colors hover:text-foreground">
+              <a href={item.href} className="transition-colors hover:text-accent">
                 {item.label}
               </a>
             </li>
@@ -114,7 +167,7 @@ function Hero() {
         className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(circle_at_15%_10%,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_45%)]"
       />
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-7">
-        <p className="font-mono text-sm text-accent">Solo founder building InLine</p>
+        <Eyebrow>Solo founder building InLine</Eyebrow>
         <h1 className="max-w-3xl text-5xl font-bold tracking-tight sm:text-7xl">
           I ship products.
           <br />
@@ -127,16 +180,16 @@ function Hero() {
           architecture, and direct AI tools to build it — then I&apos;m the one debugging it,
           fixing it, and shipping it.
         </p>
-        <div className="flex flex-wrap gap-4 pt-2">
+        <div className="flex flex-wrap gap-5 pt-4">
           <a
             href="#work"
-            className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-[#08110d] transition-opacity hover:opacity-90"
+            className="pixel-border inline-flex bg-accent px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-[#08110d] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
           >
             See my work
           </a>
           <a
             href={links.email}
-            className="rounded-full border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+            className="pixel-border-muted inline-flex border border-border bg-surface px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-foreground transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
           >
             Get in touch
           </a>
@@ -148,9 +201,11 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" className="border-t border-border px-6 py-20">
+    <section id="about" className="border-t-2 border-border px-6 py-20">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 sm:flex-row sm:gap-16">
-        <h2 className="text-sm font-mono text-accent sm:w-40 sm:shrink-0">About</h2>
+        <div className="sm:w-40 sm:shrink-0">
+          <Eyebrow>About</Eyebrow>
+        </div>
         <p className="max-w-2xl text-lg leading-relaxed text-muted">
           I&apos;m Xavier. Most of my time goes into{" "}
           <span className="text-foreground">InLine</span>, a SaaS app that lets barbers and
@@ -172,9 +227,9 @@ function StatusBadge({ status, label }: { status: Project["status"]; label: stri
       : "border-accent/30 bg-accent/10 text-accent";
   return (
     <span
-      className={`inline-flex w-fit items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${styles}`}
+      className={`inline-flex w-fit items-center gap-1.5 border px-3 py-1 text-xs font-medium ${styles}`}
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      <span className="h-1.5 w-1.5 bg-current" />
       {label}
     </span>
   );
@@ -183,30 +238,36 @@ function StatusBadge({ status, label }: { status: Project["status"]; label: stri
 function ProjectCard({ project }: { project: Project }) {
   const content = (
     <>
-      <div className="flex flex-wrap items-center gap-3">
-        <h3 className="text-2xl font-semibold tracking-tight">{project.name}</h3>
-        <StatusBadge status={project.status} label={project.statusLabel} />
+      <div className="flex items-start gap-4">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-border bg-background text-accent">
+          <PixelIcon grid={project.icon} className="h-8 w-8" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <h3 className="font-pixel text-base tracking-wide sm:text-lg">{project.name}</h3>
+            <StatusBadge status={project.status} label={project.statusLabel} />
+          </div>
+          <p className="text-sm text-muted">{project.tagline}</p>
+        </div>
       </div>
-      <p className="mt-1 text-sm text-muted">{project.tagline}</p>
       <p className="mt-6 leading-relaxed text-muted">{project.description}</p>
       <div className="mt-6 flex flex-wrap gap-2">
         {project.tags.map((tag) => (
-          <span key={tag} className="rounded-full border border-border px-3 py-1 text-xs text-muted">
+          <span key={tag} className="border border-border px-3 py-1 text-xs text-muted">
             {tag}
           </span>
         ))}
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-4">
         {project.href && (
-          <span className="text-sm font-medium text-accent">{project.linkLabel ?? "Visit →"}</span>
+          <span className="font-pixel text-[10px] text-accent">{project.linkLabel ?? "Visit →"}</span>
         )}
         {project.note && <span className="text-sm text-muted">{project.note}</span>}
       </div>
     </>
   );
 
-  const cardClass =
-    "block rounded-2xl border border-border bg-surface p-8 transition-colors sm:p-10";
+  const cardClass = "pixel-border-muted block border border-border bg-surface p-8 transition-transform sm:p-10";
 
   if (project.href) {
     return (
@@ -214,7 +275,7 @@ function ProjectCard({ project }: { project: Project }) {
         href={project.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${cardClass} hover:border-accent/50`}
+        className={`${cardClass} hover:-translate-x-1 hover:-translate-y-1 hover:pixel-border`}
       >
         {content}
       </a>
@@ -226,10 +287,12 @@ function ProjectCard({ project }: { project: Project }) {
 
 function Projects() {
   return (
-    <section id="work" className="border-t border-border px-6 py-20">
+    <section id="work" className="border-t-2 border-border px-6 py-20">
       <div className="mx-auto w-full max-w-5xl">
-        <h2 className="mb-10 font-mono text-sm text-accent">Selected work</h2>
-        <div className="flex flex-col gap-6">
+        <div className="mb-10">
+          <Eyebrow>Selected work</Eyebrow>
+        </div>
+        <div className="flex flex-col gap-8">
           {projects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
@@ -254,16 +317,18 @@ function Projects() {
 
 function Skills() {
   return (
-    <section id="skills" className="border-t border-border px-6 py-20">
+    <section id="skills" className="border-t-2 border-border px-6 py-20">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 sm:flex-row sm:gap-16">
-        <h2 className="text-sm font-mono text-accent sm:w-40 sm:shrink-0">How I build</h2>
+        <div className="sm:w-40 sm:shrink-0">
+          <Eyebrow>How I build</Eyebrow>
+        </div>
         <div className="flex max-w-2xl flex-col gap-10">
           <div>
             <p className="mb-4 text-sm font-medium text-foreground">What I actually do</p>
             <ul className="flex flex-col gap-2">
               {ownership.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-muted">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />
                   {item}
                 </li>
               ))}
@@ -273,7 +338,7 @@ function Skills() {
             <p className="mb-4 text-sm font-medium text-foreground">Stack I build with</p>
             <ul className="flex flex-wrap gap-2">
               {stack.map((item) => (
-                <li key={item} className="rounded-full border border-border px-3 py-1.5 text-sm text-muted">
+                <li key={item} className="border border-border px-3 py-1.5 text-sm text-muted">
                   {item}
                 </li>
               ))}
@@ -287,15 +352,15 @@ function Skills() {
 
 function Contact() {
   return (
-    <section id="contact" className="border-t border-border px-6 py-24">
+    <section id="contact" className="border-t-2 border-border px-6 py-24">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-start gap-6">
-        <h2 className="font-mono text-sm text-accent">Contact</h2>
+        <Eyebrow>Contact</Eyebrow>
         <p className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
           Building something interesting? Let&apos;s talk.
         </p>
         <a
           href={links.email}
-          className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-[#08110d] transition-opacity hover:opacity-90"
+          className="pixel-border inline-flex bg-accent px-5 py-3 font-pixel text-[10px] uppercase tracking-wide text-[#08110d] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:text-xs"
         >
           xavierbeckles23@gmail.com
         </a>
@@ -306,14 +371,14 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border px-6 py-8">
+    <footer className="border-t-2 border-border px-6 py-8">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-4 text-sm text-muted sm:flex-row">
         <p>© {new Date().getFullYear()} Xavier Beckles</p>
         <div className="flex gap-6">
-          <a href={links.github} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+          <a href={links.github} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
             GitHub
           </a>
-          <a href={links.email} className="hover:text-foreground">
+          <a href={links.email} className="hover:text-accent">
             Email
           </a>
         </div>

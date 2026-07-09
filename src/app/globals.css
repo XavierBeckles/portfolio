@@ -18,14 +18,40 @@
   --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-pixel);
 }
 
 body {
-  background: var(--background);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, white 3%, transparent) 0px,
+      color-mix(in srgb, white 3%, transparent) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, white 5%, transparent) 1px, transparent 0)
+      0 0 / 24px 24px,
+    var(--background);
   color: var(--foreground);
 }
 
 ::selection {
   background: var(--accent);
   color: #08110d;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+  line-height: 1.6;
+}
+
+.pixel-border {
+  border-radius: 0;
+  box-shadow: 4px 4px 0 0 var(--accent);
+}
+
+.pixel-border-muted {
+  border-radius: 0;
+  box-shadow: 4px 4px 0 0 var(--border);
 }
