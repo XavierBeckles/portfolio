@@ -12,6 +12,7 @@ type Project = {
   status: "wip" | "shipped";
   statusLabel: string;
   href?: string;
+  linkLabel?: string;
   note?: string;
 };
 
@@ -24,7 +25,9 @@ const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Supabase", "PayPal API", "Tailwind CSS"],
     status: "wip",
     statusLabel: "Work in progress — pre-launch",
-    note: "Private repo, not public yet",
+    href: "https://myinline.vercel.app",
+    linkLabel: "Visit site →",
+    note: "Live preview — payments aren't fully live yet",
   },
   {
     name: "Axiom",
@@ -34,7 +37,9 @@ const projects: Project[] = [
     tags: ["Flask", "Python", "SQLite", "USDA API"],
     status: "wip",
     statusLabel: "Work in progress",
-    href: "https://github.com/XavierBeckles/Axiom-Fitness",
+    href: "https://axiom-fitness.onrender.com",
+    linkLabel: "Visit site →",
+    note: "Free tier — may take a few seconds to wake up",
   },
 ];
 
@@ -192,11 +197,12 @@ function ProjectCard({ project }: { project: Project }) {
           </span>
         ))}
       </div>
-      {project.href ? (
-        <p className="mt-6 text-sm font-medium text-accent">View on GitHub →</p>
-      ) : project.note ? (
-        <p className="mt-6 text-sm text-muted">{project.note}</p>
-      ) : null}
+      <div className="mt-6 flex flex-wrap items-center gap-4">
+        {project.href && (
+          <span className="text-sm font-medium text-accent">{project.linkLabel ?? "Visit →"}</span>
+        )}
+        {project.note && <span className="text-sm text-muted">{project.note}</span>}
+      </div>
     </>
   );
 
