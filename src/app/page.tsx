@@ -115,7 +115,10 @@ function Nav() {
         <ul className="flex items-center gap-6 text-sm text-muted">
           {items.map((item) => (
             <li key={item.href}>
-              <a href={item.href} className="transition-colors hover:text-accent">
+              <a
+                href={item.href}
+                className="relative py-1 transition-colors duration-300 ease-out hover:text-accent after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 after:ease-out hover:after:w-full"
+              >
                 {item.label}
               </a>
             </li>

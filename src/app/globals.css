@@ -41,6 +41,14 @@ body {
   color: #08110d;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
 .font-pixel {
   font-family: var(--font-pixel);
   line-height: 1.5;
