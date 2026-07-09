@@ -1,6 +1,5 @@
 const links = {
   github: "https://github.com/XavierBeckles",
-  linkedin: "https://linkedin.com/in/your-linkedin-here",
   email: "mailto:xavierbeckles23@gmail.com",
 };
 
@@ -313,9 +312,6 @@ function Footer() {
         <div className="flex gap-6">
           <a href={links.github} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
             GitHub
-          </a>
-          <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
-            LinkedIn
           </a>
           <a href={links.email} className="hover:text-foreground">
             Email
